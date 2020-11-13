@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "FtsUtilityAI",
+	"Description": "Basic Utility AI framework",
+	"Category": "Other",
+	"CreatedBy": "FreetimeStudio",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "FtsUtilityAI",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
