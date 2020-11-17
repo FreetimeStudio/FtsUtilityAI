@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="AI")
 	TArray<UFtsUtilityAIBucket*> Buckets;
 
-    UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Instanced, Category="AI")
 	UFtsUtilityAIAction* CurrentAction;
 
 	// Called when the game starts

@@ -2,8 +2,9 @@
 
 
 #include "FtsUtilityAIAction.h"
-
+#include "FtsUtilityAIScoringMethod.h"
 #include "FtsUtilityAIBucket.h"
+#include "FtsUtilityAIComponent.h"
 
 UFtsUtilityAIAction::UFtsUtilityAIAction()
     : Super()
@@ -31,7 +32,13 @@ UFtsUtilityAIBucket* UFtsUtilityAIAction::GetUtilityBucket() const
 
 UFtsUtilityAIComponent* UFtsUtilityAIAction::GetUtilityComponent() const
 {
-    return GetUtilityBucket()->GetUtilityComponent();
+    const auto Bucket = GetUtilityBucket();
+    if(!Bucket)
+    {
+        return nullptr;
+    }
+    
+    return Bucket->GetUtilityComponent();
 }
 
 AAIController* UFtsUtilityAIAction::GetAIController() const
@@ -72,7 +79,18 @@ void UFtsUtilityAIAction::BeginAction_Implementation()
 
 float UFtsUtilityAIAction::ScoreAction_Implementation()
 {
-    return Weight;
+    if(ScoringMethods.Num()==0)
+    {
+        return Weight;
+    }
+
+    auto Score = 0.f;
+    for(auto ScoreMethod : ScoringMethods)
+    {
+        Score += ScoreMethod->GetScore(this);
+    }
+
+    return (Score/ScoringMethods.Num())*Weight;
 }
 
 void UFtsUtilityAIAction::InitializeAction_Implementation()

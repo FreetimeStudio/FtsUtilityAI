@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "UObject/NoExportTypes.h"
 #include "FtsUtilityAIAction.generated.h"
 
@@ -11,11 +12,12 @@ class UBlackboardComponent;
 class UAIPerceptionComponent;
 class UFtsUtilityAIComponent;
 class UFtsUtilityAIBucket;
+class UFtsUtilityAIScoringMethod;
 
 /**
  * 
  */
-UCLASS(Abstract, EditInlineNew, BlueprintType, Blueprintable, CollapseCategories)
+UCLASS(Abstract, EditInlineNew, BlueprintType, Blueprintable, CollapseCategories, meta = (ShowWorldContextPin))
 class FTSUTILITYAI_API UFtsUtilityAIAction : public UObject
 {
 	GENERATED_BODY()
@@ -33,6 +35,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
 	FColor DebugColor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Action")
+	TArray<UFtsUtilityAIScoringMethod*> ScoringMethods;
+	
 public:
 	UFtsUtilityAIAction();
 
@@ -81,4 +86,5 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
 	void UninitializeAction();
+
 };
