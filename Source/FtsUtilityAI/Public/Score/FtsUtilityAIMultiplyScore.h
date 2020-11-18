@@ -16,7 +16,7 @@ class FTSUTILITYAI_API UFtsUtilityAIMultiplyScore : public UFtsUtilityAIScore
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Bucket")
-	TArray<UFtsUtilityAIScore*> ScoringMethods;
+	TArray<UFtsUtilityAIScore*> SubScores;
 
 public:
 	virtual float EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const override;

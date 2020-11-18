@@ -5,12 +5,17 @@
 
 float UFtsUtilityAIMultiplyScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
-    auto Score = 1.f;
+    auto FinalScore = 1.f;
 
-    for(auto Method : ScoringMethods)
+    for(auto Score : SubScores)
     {
-        Score *= Method->GetScore(Action);
+        if(!IsValid(Score))
+        {
+            continue;
+        }
+        
+        FinalScore *= Score->GetScore(Action);
     }
 
-    return Score;
+    return FinalScore;
 }

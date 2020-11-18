@@ -11,6 +11,11 @@ UFtsUtilityAICurveScore::UFtsUtilityAICurveScore()
 
 float UFtsUtilityAICurveScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
+    if(!IsValid(ModifiedScore))
+    {
+        return 0.f;
+    }
+    
     auto Score = ModifiedScore->GetScore(Action);
     if(WeightCurve.GetRichCurveConst())
     {

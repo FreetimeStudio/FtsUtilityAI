@@ -79,18 +79,23 @@ void UFtsUtilityAIAction::BeginAction_Implementation()
 
 float UFtsUtilityAIAction::ScoreAction_Implementation()
 {
-    if(ScoringMethods.Num()==0)
+    if(Scores.Num()==0)
     {
         return Weight;
     }
 
-    auto Score = 0.f;
-    for(auto ScoreMethod : ScoringMethods)
+    auto ScoreSum = 0.f;
+    for(auto Score : Scores)
     {
-        Score += ScoreMethod->GetScore(this);
+        if(!IsValid(Score))
+        {
+            continue;
+        }
+        
+        ScoreSum += Score->GetScore(this);
     }
 
-    return (Score/ScoringMethods.Num())*Weight;
+    return (ScoreSum/Scores.Num())*Weight;
 }
 
 void UFtsUtilityAIAction::InitializeAction_Implementation()

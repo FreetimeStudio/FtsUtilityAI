@@ -36,7 +36,7 @@ protected:
 	FColor DebugColor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Action")
-	TArray<UFtsUtilityAIScore*> ScoringMethods;
+	TArray<UFtsUtilityAIScore*> Scores;
 	
 public:
 	UFtsUtilityAIAction();

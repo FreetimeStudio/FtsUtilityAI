@@ -6,17 +6,22 @@
 
 float UFtsUtilityAIAverageScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
-    if(ScoringMethods.Num()==0)
+    if(SubScores.Num()==0)
     {
         return 0.f;
     }
 
-    auto Score = 0.f;
+    auto ScoreSum = 0.f;
 
-    for(auto Method : ScoringMethods)
+    for(auto Score : SubScores)
     {
-        Score += Method->GetScore(Action);
+        if(!IsValid(Score))
+        {
+            continue;
+        }
+        
+        ScoreSum += Score->GetScore(Action);
     }
 
-    return Score / ScoringMethods.Num();
+    return ScoreSum / SubScores.Num();
 }
