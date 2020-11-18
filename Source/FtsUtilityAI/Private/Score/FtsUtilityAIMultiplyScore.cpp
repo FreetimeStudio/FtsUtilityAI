@@ -1,9 +1,9 @@
 // (c) 2020 by FreetimeStudio
 
 
-#include "ScoringMethods/FtsUtilityAIMultiplyScoringMethod.h"
+#include "Score/FtsUtilityAIMultiplyScore.h"
 
-float UFtsUtilityAIMultiplyScoringMethod::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAIMultiplyScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
     auto Score = 1.f;
 

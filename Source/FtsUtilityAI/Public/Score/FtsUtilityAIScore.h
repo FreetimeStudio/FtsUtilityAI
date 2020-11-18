@@ -6,13 +6,13 @@
 
 #include "FtsUtilityAIAction.h"
 #include "UObject/NoExportTypes.h"
-#include "FtsUtilityAIScoringMethod.generated.h"
+#include "FtsUtilityAIScore.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract, EditInlineNew, BlueprintType, Blueprintable, CollapseCategories, meta = (ShowWorldContextPin))
-class FTSUTILITYAI_API UFtsUtilityAIScoringMethod : public UObject
+class FTSUTILITYAI_API UFtsUtilityAIScore : public UObject
 {
 	GENERATED_BODY()
 
@@ -22,7 +22,7 @@ protected:
 
 public:
 
-	UFtsUtilityAIScoringMethod();
+	UFtsUtilityAIScore();
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Scoring")
 	virtual float GetScore(UFtsUtilityAIAction* Action) const;

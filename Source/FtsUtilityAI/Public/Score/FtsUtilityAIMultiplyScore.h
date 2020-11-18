@@ -3,20 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FtsUtilityAIScoringMethod.h"
-#include "FtsUtilityAIAverageScoringMethod.generated.h"
+#include "FtsUtilityAIScore.h"
+#include "FtsUtilityAIMultiplyScore.generated.h"
 
 /**
  * 
  */
-UCLASS(meta=(DisplayName="Average"))
-class FTSUTILITYAI_API UFtsUtilityAIAverageScoringMethod : public UFtsUtilityAIScoringMethod
+UCLASS(meta=(DisplayName="Multiply"))
+class FTSUTILITYAI_API UFtsUtilityAIMultiplyScore : public UFtsUtilityAIScore
 {
 	GENERATED_BODY()
-
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Bucket")
-	TArray<UFtsUtilityAIScoringMethod*> ScoringMethods;
+	TArray<UFtsUtilityAIScore*> ScoringMethods;
 
 public:
 	virtual float EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const override;

@@ -2,7 +2,7 @@
 
 
 #include "FtsUtilityAIAction.h"
-#include "FtsUtilityAIScoringMethod.h"
+#include "Score/FtsUtilityAIScore.h"
 #include "FtsUtilityAIBucket.h"
 #include "FtsUtilityAIComponent.h"
 

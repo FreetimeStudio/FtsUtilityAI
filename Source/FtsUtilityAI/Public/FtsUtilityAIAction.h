@@ -12,7 +12,7 @@ class UBlackboardComponent;
 class UAIPerceptionComponent;
 class UFtsUtilityAIComponent;
 class UFtsUtilityAIBucket;
-class UFtsUtilityAIScoringMethod;
+class UFtsUtilityAIScore;
 
 /**
  * 
@@ -36,7 +36,7 @@ protected:
 	FColor DebugColor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Action")
-	TArray<UFtsUtilityAIScoringMethod*> ScoringMethods;
+	TArray<UFtsUtilityAIScore*> ScoringMethods;
 	
 public:
 	UFtsUtilityAIAction();

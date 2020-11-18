@@ -1,10 +1,10 @@
 // (c) 2020 by FreetimeStudio
 
 
-#include "ScoringMethods/FtsUtilityAIAverageScoringMethod.h"
+#include "Score/FtsUtilityAIAverageScore.h"
 
 
-float UFtsUtilityAIAverageScoringMethod::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAIAverageScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
     if(ScoringMethods.Num()==0)
     {
