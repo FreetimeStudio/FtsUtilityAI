@@ -23,6 +23,14 @@ void UFtsUtilityAIComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	for(auto Bucket : Buckets)
+	{
+		if (IsValid(Bucket))
+		{
+			Bucket->InitializeBucket();
+		}
+	}
+
 	// ...
 	
 }

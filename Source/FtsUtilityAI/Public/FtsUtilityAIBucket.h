@@ -39,6 +39,9 @@ public:
     UFtsUtilityAIBucket();
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
+    void InitializeBucket();
+
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
     float ScoreBucket();
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")

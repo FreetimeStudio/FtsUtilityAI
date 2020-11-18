@@ -100,4 +100,11 @@ float UFtsUtilityAIAction::ScoreAction_Implementation()
 
 void UFtsUtilityAIAction::InitializeAction_Implementation()
 {
+    for(auto Score : Scores)
+    {
+        if (IsValid(Score))
+        {
+            Score->InitializeScore(this);
+        }
+    }
 }

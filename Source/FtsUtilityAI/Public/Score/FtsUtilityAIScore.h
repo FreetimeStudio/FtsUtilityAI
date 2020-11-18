@@ -26,6 +26,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Scoring")
 	virtual float GetScore(UFtsUtilityAIAction* Action) const;
+
+	UFUNCTION(BlueprintNativeEvent, Category="Scoring")
+    void InitializeScore(UFtsUtilityAIAction* Action);
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category="Scoring")
 	float EvaluateScore(UFtsUtilityAIAction* Action) const;

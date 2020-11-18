@@ -13,6 +13,17 @@ UFtsUtilityAIBucket::UFtsUtilityAIBucket()
     CachedScore = 0.f;
 }
 
+void UFtsUtilityAIBucket::InitializeBucket_Implementation()
+{
+    for(auto Action : Actions)
+    {
+        if (IsValid(Action))
+        {
+            Action->InitializeAction();
+        }
+    }
+}
+
 float UFtsUtilityAIBucket::GetCachedScore_Implementation() const
 {
     return CachedScore;

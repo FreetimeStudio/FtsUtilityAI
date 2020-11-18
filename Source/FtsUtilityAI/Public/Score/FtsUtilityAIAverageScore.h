@@ -19,5 +19,7 @@ protected:
 	TArray<UFtsUtilityAIScore*> SubScores;
 
 public:
+
+	virtual void InitializeScore_Implementation(UFtsUtilityAIAction* Action) override;
 	virtual float EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const override;
 };

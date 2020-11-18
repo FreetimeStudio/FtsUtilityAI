@@ -9,6 +9,16 @@ UFtsUtilityAICurveScore::UFtsUtilityAICurveScore()
     WeightCurve.GetRichCurve()->AddKey(0.f,1.f);
 }
 
+void UFtsUtilityAICurveScore::InitializeScore_Implementation(UFtsUtilityAIAction* Action)
+{
+    Super::InitializeScore_Implementation(Action);
+
+    if (IsValid(ModifiedScore))
+    {
+        ModifiedScore->InitializeScore(Action);
+    }
+}
+
 float UFtsUtilityAICurveScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
 {
     if(!IsValid(ModifiedScore))
