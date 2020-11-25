@@ -15,11 +15,14 @@ class FTSUTILITYAI_API UFtsUtilityAIAverageScore : public UFtsUtilityAIScore
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Bucket")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Utility AI")
+	TArray<FName> SubScoresConfig;
+
+	UPROPERTY(BlueprintReadWrite, Category="Utility AI")
 	TArray<UFtsUtilityAIScore*> SubScores;
 
 public:
 
-	virtual void InitializeScore_Implementation(UFtsUtilityAIAction* Action) override;
-	virtual float EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const override;
+	virtual void InitializeScore_Implementation() override;
+	virtual float EvaluateScore_Implementation(float DeltaSeconds) override;
 };

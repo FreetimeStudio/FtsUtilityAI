@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "FtsUtilityAIAction.h"
 #include "FtsUtilityAIBucket.h"
+#include "Score/FtsUtilityAIScore.h"
 
 // Sets default values for this component's properties
 UFtsUtilityAIComponent::UFtsUtilityAIComponent()
@@ -31,6 +32,11 @@ void UFtsUtilityAIComponent::BeginPlay()
 		}
 	}
 
+	for(auto Score: Scores)
+	{
+		Score->InitializeScore();
+	}
+
 	// ...
 	
 }
@@ -41,7 +47,7 @@ void UFtsUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	ChooseNextAction();
+	ChooseNextAction(DeltaTime);
 	
 	// Update active action
 	if(CurrentAction)
@@ -50,8 +56,13 @@ void UFtsUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	}
 }
 
-void UFtsUtilityAIComponent::ChooseNextAction()
+void UFtsUtilityAIComponent::ChooseNextAction(float DeltaSeconds)
 {
+	for(auto Score: Scores)
+	{
+		Score->UpdateScore(DeltaSeconds);
+	}
+
 	for(auto Bucket: Buckets)
 	{
 		Bucket->ScoreBucket();
@@ -94,6 +105,24 @@ void UFtsUtilityAIComponent::ChooseNextAction()
 	}
 }
 
+UFtsUtilityAIScore* UFtsUtilityAIComponent::GetScoreById(const FName& Id)
+{
+	for(auto Score : Scores)
+	{
+		if(!IsValid(Score))
+		{
+			continue;
+		}
+		
+		if(Score->GetUtilityId() == Id)
+		{
+			return Score;
+		}
+	}
+
+	return nullptr;
+}
+
 UFtsUtilityAIBucket* UFtsUtilityAIComponent::GetBucketByClass(TSubclassOf<UFtsUtilityAIBucket> BucketClass)
 {
 	for(auto Bucket : Buckets)
@@ -121,7 +150,7 @@ UFtsUtilityAIBucket* UFtsUtilityAIComponent::GetBucketByName(const FName& Bucket
 			continue;
 		}
 		
-		if(Bucket->GetBucketName() == BucketName)
+		if(Bucket->GetUtilityId() == BucketName)
 		{
 			return Bucket;
 		}
@@ -133,7 +162,7 @@ UFtsUtilityAIBucket* UFtsUtilityAIComponent::GetBucketByName(const FName& Bucket
 UFtsUtilityAIBucket* UFtsUtilityAIComponent::CreateBucket(TSubclassOf<UFtsUtilityAIBucket> Class, FName BucketName)
 {
 	auto Bucket = NewObject<UFtsUtilityAIBucket>(this, Class, MakeUniqueObjectName(this, Class, BucketName));
-	Bucket->SetBucketName(BucketName);
+	Bucket->SetUtilityId(BucketName);
 	Buckets.Add(Bucket);
 	return Bucket;
 }
@@ -171,7 +200,7 @@ UFtsUtilityAIAction* UFtsUtilityAIComponent::CreateAction(FName BucketName, TSub
 {
 	for(auto Bucket : Buckets)
 	{
-		if(Bucket->GetBucketName() == BucketName)
+		if(Bucket->GetUtilityId() == BucketName)
 		{
 			return Bucket->CreateAction(Class, ActionName);
 		}

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "FtsUtilityAiObject.h"
 #include "UObject/NoExportTypes.h"
 #include "FtsUtilityAIAction.generated.h"
 
@@ -18,14 +18,11 @@ class UFtsUtilityAIScore;
  * 
  */
 UCLASS(Abstract, EditInlineNew, BlueprintType, Blueprintable, CollapseCategories, meta = (ShowWorldContextPin))
-class FTSUTILITYAI_API UFtsUtilityAIAction : public UObject
+class FTSUTILITYAI_API UFtsUtilityAIAction : public UFtsUtilityAiObject
 {
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
-	FName ActionName;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
     float Weight;
 
@@ -35,14 +32,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
 	FColor DebugColor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Action")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
+	TArray<FName> ScoresConfig;
+
+	UPROPERTY(BlueprintReadWrite, Category="Action")
 	TArray<UFtsUtilityAIScore*> Scores;
 	
 public:
 	UFtsUtilityAIAction();
-
-	void SetActionName(const FName& NewActionName);
-	FName GetActionName() const;
 
 	UFUNCTION(BlueprintCallable, Category="Action")
     virtual UFtsUtilityAIBucket* GetUtilityBucket() const;

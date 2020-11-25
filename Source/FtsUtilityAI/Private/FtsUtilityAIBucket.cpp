@@ -8,7 +8,6 @@
 UFtsUtilityAIBucket::UFtsUtilityAIBucket()
     : Super()
 {
-    BucketName = NAME_None;
     Weight = 1.f;
     CachedScore = 0.f;
 }
@@ -76,7 +75,7 @@ UFtsUtilityAIAction* UFtsUtilityAIBucket::GetActionByName(FName ActionName)
             continue;
         }
 
-        if(Action->GetActionName() == ActionName)
+        if(Action->GetUtilityId() == ActionName)
         {
             return Action;
         }
@@ -88,7 +87,7 @@ UFtsUtilityAIAction* UFtsUtilityAIBucket::GetActionByName(FName ActionName)
 UFtsUtilityAIAction* UFtsUtilityAIBucket::CreateAction(TSubclassOf<UFtsUtilityAIAction> Class, FName ActionName)
 {
     auto Action = NewObject<UFtsUtilityAIAction>(this, Class, MakeUniqueObjectName(this, Class, ActionName));
-    Action->SetActionName(ActionName);
+    Action->SetUtilityId(ActionName);
     AddAction(Action);
     return Action;
 }
@@ -141,14 +140,4 @@ UBlackboardComponent* UFtsUtilityAIBucket::GetBlackboard() const
 UAIPerceptionComponent* UFtsUtilityAIBucket::GetPerception() const
 {
     return GetUtilityComponent()->GetPerception();
-}
-
-void UFtsUtilityAIBucket::SetBucketName(const FName& NewName)
-{
-    BucketName = NewName;
-}
-
-FName UFtsUtilityAIBucket::GetBucketName() const
-{
-    return BucketName;
 }

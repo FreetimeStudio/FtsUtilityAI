@@ -15,17 +15,20 @@ class FTSUTILITYAI_API UFtsUtilityAICurveScore : public UFtsUtilityAIScore
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Bucket")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Utility AI")
+	FName ModifiedScoreId;
+
+	UPROPERTY(BlueprintReadWrite, Category="Utility AI")
 	UFtsUtilityAIScore* ModifiedScore;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Scoring", AdvancedDisplay)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Utility AI", AdvancedDisplay)
 	FRuntimeFloatCurve WeightCurve;
 
 public:
 
 	UFtsUtilityAICurveScore();
 
-	virtual void InitializeScore_Implementation(UFtsUtilityAIAction* Action) override;
-	virtual float EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const override;
+	virtual void InitializeScore_Implementation() override;
+	virtual float EvaluateScore_Implementation(float DeltaSeconds) override;
 };
 

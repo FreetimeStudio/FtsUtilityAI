@@ -12,17 +12,6 @@ UFtsUtilityAIAction::UFtsUtilityAIAction()
     Weight = 1.f;
     bDrawDebug = false;
     DebugColor = FColor::Orange;
-    ActionName = NAME_None;
-}
-
-void UFtsUtilityAIAction::SetActionName(const FName& NewActionName)
-{
-    ActionName = NewActionName;
-}
-
-FName UFtsUtilityAIAction::GetActionName() const
-{
-    return ActionName;
 }
 
 UFtsUtilityAIBucket* UFtsUtilityAIAction::GetUtilityBucket() const
@@ -92,7 +81,7 @@ float UFtsUtilityAIAction::ScoreAction_Implementation()
             continue;
         }
         
-        ScoreSum += Score->GetScore(this);
+        ScoreSum += Score->GetScore();
     }
 
     return (ScoreSum/Scores.Num())*Weight;
@@ -100,11 +89,9 @@ float UFtsUtilityAIAction::ScoreAction_Implementation()
 
 void UFtsUtilityAIAction::InitializeAction_Implementation()
 {
-    for(auto Score : Scores)
+    for(auto ScoreId : ScoresConfig)
     {
-        if (IsValid(Score))
-        {
-            Score->InitializeScore(this);
-        }
+        auto Score = GetUtilityComponent()->GetScoreById(ScoreId);
+        Scores.Add(Score);
     }
 }

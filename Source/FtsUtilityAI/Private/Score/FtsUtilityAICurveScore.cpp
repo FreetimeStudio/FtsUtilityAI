@@ -3,34 +3,28 @@
 
 #include "Score/FtsUtilityAICurveScore.h"
 
+#include "FtsUtilityAIComponent.h"
+
 UFtsUtilityAICurveScore::UFtsUtilityAICurveScore()
     : Super()
 {
-    WeightCurve.GetRichCurve()->AddKey(0.f,1.f);
 }
 
-void UFtsUtilityAICurveScore::InitializeScore_Implementation(UFtsUtilityAIAction* Action)
+void UFtsUtilityAICurveScore::InitializeScore_Implementation()
 {
-    Super::InitializeScore_Implementation(Action);
+    Super::InitializeScore_Implementation();
 
-    if (IsValid(ModifiedScore))
-    {
-        ModifiedScore->InitializeScore(Action);
-    }
+    ModifiedScore = GetUtilityAiComponent()->GetScoreById(ModifiedScoreId);
 }
 
-float UFtsUtilityAICurveScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAICurveScore::EvaluateScore_Implementation(float DeltaSeconds)
 {
     if(!IsValid(ModifiedScore))
     {
         return 0.f;
     }
     
-    auto Score = ModifiedScore->GetScore(Action);
-    if(WeightCurve.GetRichCurveConst())
-    {
-        Score = WeightCurve.GetRichCurveConst()->Eval(Score);
-    }
-
-    return Score * Weight;
+    const auto Score = ModifiedScore->GetScore();
+    return WeightCurve.GetRichCurveConst()->Eval(Score);
 }
+

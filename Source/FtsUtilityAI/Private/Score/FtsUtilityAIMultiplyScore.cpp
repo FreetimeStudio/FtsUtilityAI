@@ -3,20 +3,20 @@
 
 #include "Score/FtsUtilityAIMultiplyScore.h"
 
-void UFtsUtilityAIMultiplyScore::InitializeScore_Implementation(UFtsUtilityAIAction* Action)
-{
-    Super::InitializeScore_Implementation(Action);
+#include "FtsUtilityAIComponent.h"
 
-    for(auto Score : SubScores)
+void UFtsUtilityAIMultiplyScore::InitializeScore_Implementation()
+{
+    Super::InitializeScore_Implementation();
+
+    for(auto ScoreId : SubScoresConfig)
     {
-        if (IsValid(Score))
-        {
-            Score->InitializeScore(Action);
-        }
+        auto Score = GetUtilityAiComponent()->GetScoreById(ScoreId);
+        SubScores.Add(Score);
     }
 }
 
-float UFtsUtilityAIMultiplyScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAIMultiplyScore::EvaluateScore_Implementation(float DeltaSeconds)
 {
     auto FinalScore = 1.f;
 
@@ -27,7 +27,7 @@ float UFtsUtilityAIMultiplyScore::EvaluateScore_Implementation(UFtsUtilityAIActi
             continue;
         }
         
-        FinalScore *= Score->GetScore(Action);
+        FinalScore *= Score->GetScore();
     }
 
     return FinalScore;

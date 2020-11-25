@@ -2,23 +2,35 @@
 
 
 #include "Score/FtsUtilityAIScore.h"
+#include "FtsUtilityAIComponent.h"
 
 UFtsUtilityAIScore::UFtsUtilityAIScore()
     : Super()
 {
     Weight = 1.f;
+    CachedScore = 0.f;
 }
 
-float UFtsUtilityAIScore::GetScore(UFtsUtilityAIAction* Action) const
+void UFtsUtilityAIScore::UpdateScore(float DeltaSeconds)
 {
-    return EvaluateScore(Action) * Weight;
+    CachedScore = EvaluateScore(DeltaSeconds);
 }
 
-void UFtsUtilityAIScore::InitializeScore_Implementation(UFtsUtilityAIAction* Action)
+float UFtsUtilityAIScore::GetScore() const
+{
+    return CachedScore;
+}
+
+UFtsUtilityAIComponent* UFtsUtilityAIScore::GetUtilityAiComponent() const
+{
+    return GetTypedOuter<UFtsUtilityAIComponent>();
+}
+
+void UFtsUtilityAIScore::InitializeScore_Implementation()
 {
 }
 
-float UFtsUtilityAIScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAIScore::EvaluateScore_Implementation(float DeltaSeconds)
 {
     return 0.f;
 }

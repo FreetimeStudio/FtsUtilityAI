@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "FtsUtilityAiObject.h"
 #include "UObject/NoExportTypes.h"
 #include "FtsUtilityAIBucket.generated.h"
 
@@ -17,14 +19,11 @@ class UFtsUtilityAIAction;
  * 
  */
 UCLASS(EditInlineNew, BlueprintType, Blueprintable, CollapseCategories)
-class FTSUTILITYAI_API UFtsUtilityAIBucket : public UObject
+class FTSUTILITYAI_API UFtsUtilityAIBucket : public UFtsUtilityAiObject
 {
 	GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bucket")
-    FName BucketName;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bucket")
     float Weight;
     
@@ -81,7 +80,4 @@ public:
 
     UFUNCTION(BlueprintCallable, Category="Action")
     virtual UAIPerceptionComponent* GetPerception() const;
-
-    void SetBucketName(const FName& NewName);
-    FName GetBucketName() const;
 };

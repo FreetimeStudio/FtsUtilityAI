@@ -3,21 +3,21 @@
 
 #include "Score/FtsUtilityAIAverageScore.h"
 
+#include "FtsUtilityAIComponent.h"
 
-void UFtsUtilityAIAverageScore::InitializeScore_Implementation(UFtsUtilityAIAction* Action)
+
+void UFtsUtilityAIAverageScore::InitializeScore_Implementation()
 {
-    Super::InitializeScore_Implementation(Action);
+    Super::InitializeScore_Implementation();
 
-    for(auto Score : SubScores)
+    for(auto ScoreId : SubScoresConfig)
     {
-        if (IsValid(Score))
-        {
-            Score->InitializeScore(Action);
-        }
+        auto Score = GetUtilityAiComponent()->GetScoreById(ScoreId);
+        SubScores.Add(Score);
     }
 }
 
-float UFtsUtilityAIAverageScore::EvaluateScore_Implementation(UFtsUtilityAIAction* Action) const
+float UFtsUtilityAIAverageScore::EvaluateScore_Implementation(float DeltaSeconds)
 {
     if(SubScores.Num()==0)
     {
@@ -33,7 +33,7 @@ float UFtsUtilityAIAverageScore::EvaluateScore_Implementation(UFtsUtilityAIActio
             continue;
         }
         
-        ScoreSum += Score->GetScore(Action);
+        ScoreSum += Score->GetScore();
     }
 
     return ScoreSum / SubScores.Num();
