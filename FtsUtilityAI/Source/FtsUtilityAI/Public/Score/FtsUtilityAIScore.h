@@ -1,4 +1,4 @@
-// (c) 2020 by FreetimeStudio
+// (c) MIT 2020 by FreetimeStudio
 
 #pragma once
 
@@ -17,8 +17,6 @@ class FTSUTILITYAI_API UFtsUtilityAIScore : public UFtsUtilityAiObject
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Utility AI")
-	float Weight;
 
 	UPROPERTY(BlueprintReadOnly, Category="Utility AI")
 	float CachedScore;
@@ -31,9 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Utility AI")
 	virtual float GetScore() const;
 
-	UFUNCTION(BlueprintNativeEvent, Category="Utility AI")
-    void InitializeScore();
-	
 	UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category="Utility AI")
 	float EvaluateScore(float DeltaSeconds);
 	

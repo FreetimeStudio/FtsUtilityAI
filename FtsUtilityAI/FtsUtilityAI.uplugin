@@ -2,9 +2,9 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "FtsUtilityAI",
+	"FriendlyName": "FreetimeStudio Utility AI",
 	"Description": "Basic Utility AI framework",
-	"Category": "Other",
+	"Category": "FreetimeStudio",
 	"CreatedBy": "FreetimeStudio",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -18,6 +18,11 @@
 		{
 			"Name": "FtsUtilityAI",
 			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "FtsUtilityAIEditor",
+			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}
 	]

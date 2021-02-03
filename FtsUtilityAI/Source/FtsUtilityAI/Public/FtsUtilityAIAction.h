@@ -1,4 +1,4 @@
-// (c) 2020 by FreetimeStudio
+// (c) MIT 2020 by FreetimeStudio
 
 #pragma once
 
@@ -23,47 +23,17 @@ class FTSUTILITYAI_API UFtsUtilityAIAction : public UFtsUtilityAiObject
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
-    float Weight;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Debug", AdvancedDisplay)
 	bool bDrawDebug;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Debug", AdvancedDisplay)
 	FColor DebugColor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Action")
-	TArray<FName> ScoresConfig;
-
 	UPROPERTY(BlueprintReadWrite, Category="Action")
-	TArray<UFtsUtilityAIScore*> Scores;
+	UFtsUtilityAIScore* Score;
 	
 public:
 	UFtsUtilityAIAction();
-
-	UFUNCTION(BlueprintCallable, Category="Action")
-    virtual UFtsUtilityAIBucket* GetUtilityBucket() const;
-
-	UFUNCTION(BlueprintCallable, Category="Action")
-    virtual UFtsUtilityAIComponent* GetUtilityComponent() const;
-	
-	UFUNCTION(BlueprintCallable, Category="Action")
-	virtual AAIController* GetAIController() const;
-
-	UFUNCTION(BlueprintCallable, Category="Action")
-	virtual APawn* GetPawn() const;
-
-	UFUNCTION(BlueprintCallable, Category="Action")
-	virtual UBlackboardComponent* GetBlackboard() const;
-
-	UFUNCTION(BlueprintCallable, Category="Action")
-	virtual UAIPerceptionComponent* GetPerception() const;
-	
-	/**
-	 * @brief Initializes Action after controller BeginPlay
-	 */
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
-    void InitializeAction();
 
 	/**
 	 * @brief Evaluates this Action and returns a score   
@@ -81,7 +51,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
 	void EndAction();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
-	void UninitializeAction();
-
+#if WITH_EDITOR
+	virtual void ClearInputs() override;
+	virtual void AddInput(UFtsUtilityAiObject* NewInput) override;
+#endif
 };

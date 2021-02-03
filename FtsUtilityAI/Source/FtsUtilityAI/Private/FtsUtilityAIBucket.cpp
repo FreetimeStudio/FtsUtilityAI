@@ -1,26 +1,18 @@
-// (c) 2020 by FreetimeStudio
+// (c) MIT 2020 by FreetimeStudio
 
 #include "FtsUtilityAIBucket.h"
 
 #include "FtsUtilityAIAction.h"
 #include "FtsUtilityAIComponent.h"
 
+#define LOCTEXT_NAMESPACE "UFtsUtilityAIBucket"
+
 UFtsUtilityAIBucket::UFtsUtilityAIBucket()
     : Super()
 {
     Weight = 1.f;
     CachedScore = 0.f;
-}
-
-void UFtsUtilityAIBucket::InitializeBucket_Implementation()
-{
-    for(auto Action : Actions)
-    {
-        if (IsValid(Action))
-        {
-            Action->InitializeAction();
-        }
-    }
+    SetUtilityId(FName("Default"));
 }
 
 float UFtsUtilityAIBucket::GetCachedScore_Implementation() const
@@ -36,6 +28,11 @@ UFtsUtilityAIAction* UFtsUtilityAIBucket::ScoreHighestAction(float& OutScore)
 
     for(auto Action : Actions)
     {
+        if(!IsValid(Action))
+        {
+            continue;
+        }
+        
         const float Score = Action->ScoreAction();
         if(Score > HighestScore)
         {
@@ -48,96 +45,61 @@ UFtsUtilityAIAction* UFtsUtilityAIBucket::ScoreHighestAction(float& OutScore)
     return HighestAction;
 }
 
-UFtsUtilityAIAction* UFtsUtilityAIBucket::GetActionByClass(TSubclassOf<UFtsUtilityAIAction> ActionClass)
-{
-    for(auto Action : Actions)
-    {
-        if(!IsValid(Action))
-        {
-            continue;
-        }
-
-        if(Action->IsA(ActionClass))
-        {
-            return Action;
-        }
-    }
-
-    return nullptr;
-}
-
-UFtsUtilityAIAction* UFtsUtilityAIBucket::GetActionByName(FName ActionName)
-{
-    for(auto Action : Actions)
-    {
-        if(!IsValid(Action))
-        {
-            continue;
-        }
-
-        if(Action->GetUtilityId() == ActionName)
-        {
-            return Action;
-        }
-    }
-
-    return nullptr;
-}
-
-UFtsUtilityAIAction* UFtsUtilityAIBucket::CreateAction(TSubclassOf<UFtsUtilityAIAction> Class, FName ActionName)
-{
-    auto Action = NewObject<UFtsUtilityAIAction>(this, Class, MakeUniqueObjectName(this, Class, ActionName));
-    Action->SetUtilityId(ActionName);
-    AddAction(Action);
-    return Action;
-}
-
-void UFtsUtilityAIBucket::AddAction(UFtsUtilityAIAction* Action)
-{
-    Actions.Add(Action);
-    Action->InitializeAction();
-}
-
-void UFtsUtilityAIBucket::RemoveAction(UFtsUtilityAIAction* Action)
-{
-    if(Actions.Remove(Action))
-    {
-        Action->UninitializeAction();
-    }
-}
-
 float UFtsUtilityAIBucket::ScoreBucket_Implementation()
 {
     CachedScore = Weight;
     return GetCachedScore();
 }
 
-void UFtsUtilityAIBucket::GetActions(TArray<UFtsUtilityAIAction*>& OutActions) const
+void UFtsUtilityAIBucket::Initialize_Implementation(UFtsUtilityAIComponent* InAiComponent)
 {
-    OutActions = Actions;
+    Super::Initialize_Implementation(InAiComponent);
+    
+    for(auto Action : Actions)
+    {
+        if (IsValid(Action))
+        {
+            Action->Initialize(InAiComponent);
+        }
+    }
 }
 
-UFtsUtilityAIComponent* UFtsUtilityAIBucket::GetUtilityComponent() const
+void UFtsUtilityAIBucket::Uninitialize_Implementation()
 {
-    return GetTypedOuter<UFtsUtilityAIComponent>();
+    Super::Uninitialize_Implementation();
+    
+    for(auto Action : Actions)
+    {
+        if (IsValid(Action))
+        {
+            Action->Uninitialize();
+        }
+    }
 }
 
-AAIController* UFtsUtilityAIBucket::GetAIController() const
+#if WITH_EDITOR
+
+FText UFtsUtilityAIBucket::GetNodeTitle() const
 {
-    return GetUtilityComponent()->GetAIController();
+    FFormatNamedArguments Args;
+    Args.Add(TEXT("BucketName"), FText::FromName(GetUtilityId()));
+    Args.Add(TEXT("Weight"), FText::AsNumber(Weight));
+    return FText::Format(LOCTEXT("NodeTitle", "{BucketName} [{Weight} x]"), Args);
 }
 
-APawn* UFtsUtilityAIBucket::GetPawn() const
+void UFtsUtilityAIBucket::ClearInputs()
 {
-    return GetUtilityComponent()->GetPawn();
+    Actions.Empty();
 }
 
-UBlackboardComponent* UFtsUtilityAIBucket::GetBlackboard() const
+void UFtsUtilityAIBucket::AddInput(UFtsUtilityAiObject* NewInput)
 {
-    return GetUtilityComponent()->GetBlackboard();
+    const auto NewAction = Cast<UFtsUtilityAIAction>(NewInput);
+    check(NewAction);
+    NewAction->Rename(nullptr, this);
+    Actions.Add(NewAction);
 }
 
-UAIPerceptionComponent* UFtsUtilityAIBucket::GetPerception() const
-{
-    return GetUtilityComponent()->GetPerception();
-}
+#endif
+
+#undef LOCTEXT_NAMESPACE

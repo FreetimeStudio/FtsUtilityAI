@@ -1,4 +1,4 @@
-// (c) 2020 by FreetimeStudio
+// (c) MIT 2020 by FreetimeStudio
 
 #pragma once
 
@@ -27,7 +27,7 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Bucket")
     float Weight;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category="Bucket")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Bucket")
     TArray<UFtsUtilityAIAction*> Actions;
 
     UPROPERTY(BlueprintReadOnly, Category="Bucket")
@@ -38,9 +38,6 @@ public:
     UFtsUtilityAIBucket();
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
-    void InitializeBucket();
-
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
     float ScoreBucket();
 
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Action")
@@ -48,36 +45,12 @@ public:
 
     UFtsUtilityAIAction* ScoreHighestAction(float& OutScore);
 
-    UFUNCTION(BlueprintCallable, Category="Action", meta=(DeterminesOutputType="Class"))
-    UFtsUtilityAIAction* GetActionByClass(TSubclassOf<UFtsUtilityAIAction> ActionClass);
-
-    UFUNCTION(BlueprintCallable, Category="Action", meta=(DeterminesOutputType="Class"))
-    UFtsUtilityAIAction* GetActionByName(FName ActionName);
-
-    UFUNCTION(BlueprintCallable, Category="Action", meta=(DeterminesOutputType="Class"))
-    UFtsUtilityAIAction* CreateAction(TSubclassOf<UFtsUtilityAIAction> Class, FName ActionName = NAME_None);
-
-    UFUNCTION(BlueprintCallable, Category="Action", meta=(DeterminesOutputType="Class"))
-    void AddAction(UFtsUtilityAIAction* Action);
-
-    UFUNCTION(BlueprintCallable, Category="Action", meta=(DeterminesOutputType="Class"))
-    void RemoveAction(UFtsUtilityAIAction* Action);
+    virtual void Initialize_Implementation(UFtsUtilityAIComponent* InAiComponent) override;
+    virtual void Uninitialize_Implementation() override;
     
-    UFUNCTION(BlueprintCallable, Category="Action")
-    void GetActions(TArray<UFtsUtilityAIAction*>& OutActions) const;
-    
-    UFUNCTION(BlueprintCallable, Category="Action")
-    virtual UFtsUtilityAIComponent* GetUtilityComponent() const;
-	
-    UFUNCTION(BlueprintCallable, Category="Action")
-    virtual AAIController* GetAIController() const;
-
-    UFUNCTION(BlueprintCallable, Category="Action")
-    virtual APawn* GetPawn() const;
-
-    UFUNCTION(BlueprintCallable, Category="Action")
-    virtual UBlackboardComponent* GetBlackboard() const;
-
-    UFUNCTION(BlueprintCallable, Category="Action")
-    virtual UAIPerceptionComponent* GetPerception() const;
+#if WITH_EDITOR
+    virtual FText GetNodeTitle() const override;
+    virtual void ClearInputs() override;
+    virtual void AddInput(UFtsUtilityAiObject* NewInput) override;
+#endif
 };

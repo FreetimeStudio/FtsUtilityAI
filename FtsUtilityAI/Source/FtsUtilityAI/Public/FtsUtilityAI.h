@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// (c) MIT 2020 by FreetimeStudio
 
 #pragma once
 

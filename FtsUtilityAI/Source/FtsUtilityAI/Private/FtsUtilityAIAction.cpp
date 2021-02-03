@@ -1,4 +1,4 @@
-// (c) 2020 by FreetimeStudio
+// (c) MIT 2020 by FreetimeStudio
 
 
 #include "FtsUtilityAIAction.h"
@@ -9,50 +9,23 @@
 UFtsUtilityAIAction::UFtsUtilityAIAction()
     : Super()
 {
-    Weight = 1.f;
     bDrawDebug = false;
     DebugColor = FColor::Orange;
 }
 
-UFtsUtilityAIBucket* UFtsUtilityAIAction::GetUtilityBucket() const
+#if WITH_EDITOR
+
+void UFtsUtilityAIAction::ClearInputs()
 {
-    return GetTypedOuter<UFtsUtilityAIBucket>();
+    Score = nullptr;
 }
 
-UFtsUtilityAIComponent* UFtsUtilityAIAction::GetUtilityComponent() const
+void UFtsUtilityAIAction::AddInput(UFtsUtilityAiObject* NewInput)
 {
-    const auto Bucket = GetUtilityBucket();
-    if(!Bucket)
-    {
-        return nullptr;
-    }
-    
-    return Bucket->GetUtilityComponent();
+    Score = Cast<UFtsUtilityAIScore>(NewInput);
 }
 
-AAIController* UFtsUtilityAIAction::GetAIController() const
-{
-    return GetUtilityBucket()->GetAIController();
-}
-
-APawn* UFtsUtilityAIAction::GetPawn() const
-{
-    return GetUtilityBucket()->GetPawn();
-}
-
-UBlackboardComponent* UFtsUtilityAIAction::GetBlackboard() const
-{
-    return GetUtilityBucket()->GetBlackboard();
-}
-
-UAIPerceptionComponent* UFtsUtilityAIAction::GetPerception() const
-{
-    return GetUtilityBucket()->GetPerception();
-}
-
-void UFtsUtilityAIAction::UninitializeAction_Implementation()
-{
-}
+#endif
 
 void UFtsUtilityAIAction::EndAction_Implementation()
 {
@@ -68,30 +41,5 @@ void UFtsUtilityAIAction::BeginAction_Implementation()
 
 float UFtsUtilityAIAction::ScoreAction_Implementation()
 {
-    if(Scores.Num()==0)
-    {
-        return Weight;
-    }
-
-    auto ScoreSum = 0.f;
-    for(auto Score : Scores)
-    {
-        if(!IsValid(Score))
-        {
-            continue;
-        }
-        
-        ScoreSum += Score->GetScore();
-    }
-
-    return (ScoreSum/Scores.Num())*Weight;
-}
-
-void UFtsUtilityAIAction::InitializeAction_Implementation()
-{
-    for(auto ScoreId : ScoresConfig)
-    {
-        auto Score = GetUtilityComponent()->GetScoreById(ScoreId);
-        Scores.Add(Score);
-    }
+    return Score->GetScore();
 }
